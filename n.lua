@@ -9,16 +9,19 @@ local Link = "https://raw.githubusercontent.com/fayvrit/Qeto/main/Tools.lua"
 local Tools = loadstring(game:HttpGet(Link))()
 
 if getgenv().Stats then
-    if Stats.Noti and Stats.ScreenUI and Stats.loop and Stats.display then
+    if Stats.Noti and Stats.ScreenUI and Stats.loop and Stats.display1 and Stats.display2 then
         Stats.Noti = nil
 
         Stats.ScreenUI:Destroy()
         Stats.loop:Disconnect()
-        Stats.display:Disconnect()
+        Stats.display1:Disconnect()
+        Stats.display2:Disconnect()
     end
 end
 
 getgenv().Stats = {}
+Stats.text1 = '<font color="rgb(207,159,255)">%s</font> Nextbuxes'
+Stats.text2 = '<font color="rgb(233,189,56)">%s</font> Punches'
 
 Stats.ScreenUI = Instance.new("ScreenGui") do
     Stats.ScreenUI.Name = "ScreenUI"
@@ -34,14 +37,24 @@ Stats.loop = game:GetService("RunService").Heartbeat:Connect(function()
     task.wait()
 end)
 
-Stats.texts = '<font color="rgb(233,189,56)">%s</font> Punches\n<font color="rgb(207,159,255)">%s</font> Nextbuxes'
-Stats.display = stats.punches:GetPropertyChangedSignal('Value'):Connect(function()
-    if stats.punches.Value < oldPValue + 50 or stats.nextbux.Value < oldNValue + 40 then return end
-    oldValue = stats.punches.Value
+Stats.display1 = stats.nextbux:GetPropertyChangedSignal('Value'):Connect(function()
+    if stats.nextbux.Value < oldNValue + 40 then return end
+    oldNValue = stats.nextbux.Value
 
     task.wait(.2)
     Stats.Noti.Message{
-        Message = Stats.texts:format(Tools.FormatNumber(stats.punches.Value), Tools.FormatNumber(stats.nextbux.Value))
+        Message = Stats.text1:format(Tools.FormatNumber(stats.nextbux.Value))
+        Duration = 3
+    }
+end)
+
+Stats.display2 = stats.punches:GetPropertyChangedSignal('Value'):Connect(function()
+    if stats.punches.Value < oldPValue + 80 then return end
+    oldPValue = stats.punches.Value
+
+    task.wait(.2)
+    Stats.Noti.Message{
+        Message = Stats.text2:format(Tools.FormatNumber(stats.punches.Value))
         Duration = 2
     }
 end)
