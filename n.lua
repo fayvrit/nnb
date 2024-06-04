@@ -9,7 +9,7 @@ local Link = "https://raw.githubusercontent.com/fayvrit/Qeto/main/Tools.lua"
 local Tools = loadstring(game:HttpGet(Link))()
 
 if getgenv().Stats then
-    if Stats.Noti and Stats.ScreenUI and Stats.loop1 and Stats.display then
+    if Stats.Noti and Stats.ScreenUI and Stats.loop and Stats.display then
         Stats.Noti = nil
 
         Stats.ScreenUI:Destroy()
