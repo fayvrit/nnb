@@ -11,7 +11,7 @@ local InterfaceManager = loadstring(game:HttpGet(Settings.Repo .. "/master/Addon
 
 local Window = Fluent:CreateWindow({
     Title = Settings.Title,
-    SubTitle = "by rit",
+    SubTitle = "ritownsya",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = false,
@@ -30,7 +30,7 @@ local Tabs = {
 local Options = Fluent.Options
 
 do
-    
+      
     Fluent:Notify({
         Title = "Loaded!",
         Content = string.format("Loaded in %ss", Tick() - StartTick),
