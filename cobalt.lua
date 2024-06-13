@@ -77,7 +77,7 @@ local Tabs = {
 
 local Options = Fluent.Options
 
-do
+--[[do
     Tabs.Self:AddParagraph({
         Title = "Self Info",
         Content = string.format("Name: %s\nDisplay Name: %s\nID: %s\nAccount Age: %s", Players.LocalPlayer.Name, Players.LocalPlayer.DisplayName, Players.LocalPlayer.UserId, Players.LocalPlayer.AccountAge)
@@ -256,7 +256,7 @@ do
     Input:OnChanged(function()
         print("Input updated:", Input.Value)
     end)
-end
+end]]
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
