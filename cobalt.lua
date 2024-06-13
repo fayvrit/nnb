@@ -143,11 +143,11 @@ end
     Punch:OnChanged(function()
         if Options.Punch.Value then
             Tools.Connect(RunService.Heartbeat, function()
-                Tools.FireSafeRemote(ReplicatedStorage.events.player["local"].punch)
-            
                 if not Options.Punch.Value then
                     if IConnections.Punch then IConnections.Punch:Disconnect() end
+                    return
                 end
+                Tools.FireSafeRemote(ReplicatedStorage.events.player["local"].punch)
             end, "Punch")
         end
     end)
@@ -158,6 +158,10 @@ end
     NextBuxTracker:OnChanged(function()
       if Options.NextBuxTracker.Value then
             Tools.Connect(Players.LocalPlayer.stats.nextbux:GetPropertyChangedSignal('Value'), function()
+                if not Options.NextBuxTracker.Value then
+                    if IConnections.NextBuxTracker then IConnections.NextBuxTracker:Disconnect() end
+                    return
+                end
                 if Players.LocalPlayer.stats.nextbux.Value < OldNValue + 80 then return end
             
                 OldNValue = Players.LocalPlayer.stats.nextbux.Value
@@ -170,9 +174,7 @@ end
                     Duration = 2
                 })
             
-                if not Options.NextBuxTracker.Value then
-                    if IConnections.NextBuxTracker then IConnections.NextBuxTracker:Disconnect() end
-                end
+                
             end, "NextBuxTracker")
         end
     end)
@@ -181,6 +183,10 @@ end
     PunchTracker:OnChanged(function()
         if Options.PunchTracker.Value then
             Tools.Connect(Players.LocalPlayer.stats.punches:GetPropertyChangedSignal('Value'), function()
+                if not Options.PunchTracker.Value then
+                    if IConnections.PunchTracker then IConnections.PunchTracker:Disconnect() end
+                    return
+                end
                 if Players.LocalPlayer.stats.punches.Value < OldPValue + 80 then return end
                 
                 OldPValue = Players.LocalPlayer.stats.punches.Value
@@ -192,10 +198,7 @@ end
                     Content = string.format("%s", Tools.FormatNumber(Players.LocalPlayer.stats.punches.Value)),
                     Duration = 2
                 })
-
-                if not Options.PunchTracker.Value then
-                    if IConnections.PunchTracker then IConnections.PunchTracker:Disconnect() end
-                end
+            
             end, "PunchTracker")
         end
     end)
