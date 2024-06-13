@@ -1,5 +1,6 @@
 -- rit owns ya
 
+
 local Settings = {
   Repo = "https://github.com/dawid-scripts/Fluent",
   Title = "Cobalt",
@@ -9,7 +10,7 @@ local Settings = {
 local Fluent = loadstring(game:HttpGet(Settings.Repo .. "/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet(Settings.Repo .. "/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet(Settings.Repo .. "/master/Addons/InterfaceManager.lua"))()
-
+print(Fluent)
 local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
