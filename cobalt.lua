@@ -2,9 +2,9 @@
 print("????")
 
 local Settings = {
-  Repo = "https://github.com/dawid-scripts/Fluent"
-  Title = "Cobalt"
-  SubTitle = "0.0.1"
+  Repo = "https://github.com/dawid-scripts/Fluent",
+  Title = "Cobalt",
+  SubTitle = "0.0.1",
 }
 
 local Fluent = loadstring(game:HttpGet(Settings.Repo .. "/releases/latest/download/main.lua"))()
