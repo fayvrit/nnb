@@ -13,9 +13,12 @@ local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local OldPValue = Players.LocalPlayer.stats.punches.Value
 local Connections = {}
 local IConnections = {}
 local Tools = {}
+
+Tools.FormatNumber = loadstring(game:HttpGet("https://raw.githubusercontent.com/fayvrit/Qeto/main/Tools.lua"))().FormatNumber
 
 Tools.Connect = function( Instance, Callback, Name )
     if not Instance or not Callback then return warn("RBXSignal Failed!") end
@@ -85,9 +88,6 @@ local Window = Fluent:CreateWindow({
 
 local Tabs = {
     Self = Window:AddTab({ Title = "Self", Icon = "" }),
-    Game = Window:AddTab({ Title = "Game", Icon = "" }),
-    Shop = Window:AddTab({ Title = "Shop", Icon = "" }),
-    Teleport = Window:AddTab({ Title = "Teleport", Icon = "" }),
     Auto = Window:AddTab({ Title = "Auto", Icon = "" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "" })
 }
@@ -137,22 +137,57 @@ local Options = Fluent.Options
     })
 end
 
---[[ Auto Tabs  do
+--[[ Auto Tabs ]]  do
     local Punch = Tabs.Auto:AddToggle("Punch", { Title = "Punch", Default = false })
     Punch:OnChanged(function()
-        if Options.Punch.Value then
-            Tools.Connect(RunService.Heartbeat, function()
-                Tools.FireSafeRemote(ReplicatedStorage.events.player.local.punch)
-            end, "Punch")
-        elseif IConnections.Punch then
+        if not Options.Punch.Value and IConnections.Punch then
             IConnections.Punch:Disconnect()
+        elseif  then
+            Tools.Connect(RunService.Heartbeat, function()
+                Tools.FireSafeRemote(ReplicatedStorage.events.player["local"].punch)
+            end, "Punch")
+        end
+    end)
+end
+
+--[[ Settings Tabs ]] do
+    local NextBuxTracker = Tabs.Settings:AddToggle("NextBuxTracker", { Title = "NextBux Tracker", Default = false })
+    NextBuxTracker:OnChanged(function()
+        if not Options.NextBuxTracker.Value and IConnections.NextBuxTracker then
+            IConnections.NextBuxTracker:Disconnect()
+        else
+            Tools.Connect(Players.LocalPlayer.stats.nextbux:GetPropertyChangedSignal('Value'), function()
+                if Players.LocalPlayer.stats.nextbux.Value < OldNValue + 80 then return end
+                OldPValue = Players.LocalPlayer.stats.nextbux.Value
+                task.wait(.2)
+                Fluent:Notify({
+                    Title = "NextBux Tracker!",
+                    Content = string.format("%s", Tools.FormatNumber(Players.LocalPlayer.stats.nextbux.Value)),
+                    Duration = 2
+                })
+            end, "NextBuxTracker")
         end
     end)
   
-end]]
+    local PunchTracker = Tabs.Settings:AddToggle("PunchTracker", { Title = "Punch Tracker", Default = false })
+    PunchTracker:OnChanged(function()
+        if not Options.PunchTracker.Value and IConnections.PunchTracker then
+            IConnections.PunchTracker:Disconnect()
+        elseif IConnections.PunchTracker then
+            Tools.Connect(Players.LocalPlayer.stats.punches:GetPropertyChangedSignal('Value'), function()
+                if Players.LocalPlayer.stats.punches.Value < OldPValue + 80 then return end
+                OldPValue = Players.LocalPlayer.stats.punches.Value
+                task.wait(.2)
+                Fluent:Notify({
+                    Title = "Punch Tracker!",
+                    Content = string.format("%s", Tools.FormatNumber(Players.LocalPlayer.stats.punches.Value)),
+                    Duration = 2
+                })
+            end, "PunchTracker")
+        end
+    end)
+end
 
-
-  
 Window:SelectTab(1)
 
 Fluent:Notify({
@@ -160,4 +195,3 @@ Fluent:Notify({
     Content = string.format("Successfully loaded %s!", Settings.Title),
     Duration = 5
 })
-
