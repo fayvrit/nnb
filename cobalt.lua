@@ -15,7 +15,7 @@ local TeleportService = game:GetService("TeleportService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local StartTick = tick() 
-local Tools = {}
+--[[local Tools = {}
 
 Tools.Rejoin = function()
     local Success, ErrorMessage = pcall(function()
@@ -53,7 +53,7 @@ Tools.FireSafeRemote = function(Instance)
     if not Instance then warn("Safe Remote Not Found!") return end
 
     return Instance:FireServer()
-end
+end]]
 
 -- // User Interface Start
 
@@ -92,7 +92,7 @@ do
                 Content = "Would you like to \"Reset your character?\"",
                 Buttons = {
                     { Title = "Confirm", Callback = function()
-                        Tools.FireSafeRemote(ReplicatedStorage.events.player.char.respawnchar)
+                        --Tools.FireSafeRemote(ReplicatedStorage.events.player.char.respawnchar)
                     end },
                     { Title = "Cancel" }
                 }
@@ -108,7 +108,7 @@ do
                 Title = string.format("%s's Dialog", Settings.Title),
                 Content = "Would you like to \"Rejoin the server?\"",
                 Buttons = {
-                    { Title = "Confirm", Callback = Tools.Rejoin },
+                    { Title = "Confirm", --[[Callback = Tools.Rejoin]] },
                     { Title = "Cancel" }
                 }
             })
