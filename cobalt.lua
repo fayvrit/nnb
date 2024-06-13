@@ -57,7 +57,7 @@ end]]
 
 -- // User Interface Start
 
-local Window = Fluent:CreateWindow({
+--[[local Window = Fluent:CreateWindow({
     Title = Settings.Title,
     SubTitle = "ritownsya",
     TabWidth = 160,
@@ -75,7 +75,7 @@ local Tabs = {
     Auto = Window:AddTab({ Title = "Auto", Icon = "" })
 }
 
-local Options = Fluent.Options
+local Options = Fluent.Options]]
 
 --[[do
     Tabs.Self:AddParagraph({
@@ -258,7 +258,7 @@ local Options = Fluent.Options
     end)
 end]]
 
-SaveManager:SetLibrary(Fluent)
+--[[SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 
 SaveManager:IgnoreThemeSettings()
@@ -271,7 +271,7 @@ SaveManager:SetFolder(string.format("%s/NNB", Settings.Title))
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
 
-Window:SelectTab(1)
+Window:SelectTab(1)]]
 
 Fluent:Notify({
     Title = "Loaded!",
@@ -279,6 +279,6 @@ Fluent:Notify({
     Duration = 5
 })
 
-SaveManager:LoadAutoloadConfig()
+--SaveManager:LoadAutoloadConfig()
 
 -- // User Interface End
