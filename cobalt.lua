@@ -142,7 +142,7 @@ end
     Punch:OnChanged(function()
         if not Options.Punch.Value and IConnections.Punch then
             IConnections.Punch:Disconnect()
-        elseif  then
+        else
             Tools.Connect(RunService.Heartbeat, function()
                 Tools.FireSafeRemote(ReplicatedStorage.events.player["local"].punch)
             end, "Punch")
@@ -173,7 +173,7 @@ end
     PunchTracker:OnChanged(function()
         if not Options.PunchTracker.Value and IConnections.PunchTracker then
             IConnections.PunchTracker:Disconnect()
-        elseif IConnections.PunchTracker then
+        else
             Tools.Connect(Players.LocalPlayer.stats.punches:GetPropertyChangedSignal('Value'), function()
                 if Players.LocalPlayer.stats.punches.Value < OldPValue + 80 then return end
                 OldPValue = Players.LocalPlayer.stats.punches.Value
