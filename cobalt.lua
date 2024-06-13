@@ -273,11 +273,12 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 
 Window:SelectTab(1)]]
 
-Fluent:Notify({
+print(Tick - StartTick)
+--[[Fluent:Notify({
     Title = "Loaded!",
     Content = string.format("Loaded in %ss", Tick() - StartTick),
     Duration = 5
-})
+})]]
 
 --SaveManager:LoadAutoloadConfig()
 
