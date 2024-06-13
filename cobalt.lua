@@ -81,13 +81,13 @@ Tabs.Self:AddParagraph({
 })
 
 Tabs.Self:AddButton({
-    Title = "Reset",
-    Description = "Reset your character",
+    Title = "Respawn",
+    Description = "Respawns your character",
     Callback = function()
         
         Window:Dialog({
             Title = string.format("%s's Dialog", Settings.Title),
-            Content = "Would you like to \"Reset your character?\"",
+            Content = "Would you like to \"Respawn your character?\"",
             Buttons = {
             
                 { Title = "Confirm", Callback = function()
@@ -124,4 +124,3 @@ Fluent:Notify({
     Content = string.format("Successfully loaded %s!", Settings.Title),
     Duration = 5
 })
-
