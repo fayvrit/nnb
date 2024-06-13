@@ -108,7 +108,7 @@ local Options = Fluent.Options
                 Title = string.format("%s's Dialog", Settings.Title),
                 Content = "Would you like to \"Rejoin the server?\"",
                 Buttons = {
-                    { Title = "Confirm", --[[Callback = Tools.Rejoin]] },
+                    { Title = "Confirm", Callback = Tools.Rejoin },
                     { Title = "Cancel" }
                 }
             })
