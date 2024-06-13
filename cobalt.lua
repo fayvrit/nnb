@@ -76,7 +76,7 @@ local Tabs = {
 local Options = Fluent.Options
 
 Tabs.Self:AddParagraph({
-    Title = "Self Info",
+    Title = "Info",
     Content = string.format("Name: %s\nDisplay Name: %s\nID: %s\nAccount Age: %s", Players.LocalPlayer.Name, Players.LocalPlayer.DisplayName, Players.LocalPlayer.UserId, Players.LocalPlayer.AccountAge)
 })
 
