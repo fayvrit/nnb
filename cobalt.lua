@@ -10,32 +10,15 @@ local Fluent = loadstring(game:HttpGet(Settings.Repo .. "/releases/latest/downlo
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local VirtualUser = game:GetService("VirtualUser")
 local TeleportService = game:GetService("TeleportService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local OldNValue = Players.LocalPlayer.stats.nextbux.Value
-local OldPValue = Players.LocalPlayer.stats.punches.Value
 local Connections = {}
 local IConnections = {}
 local Tools = {}
 
 Tools.FormatNumber = loadstring(game:HttpGet("https://raw.githubusercontent.com/fayvrit/Qeto/main/Tools.lua"))().FormatNumber
-
-Tools.Connect = function( Instance, Callback, Name )
-    if not Instance or not Callback then return warn("RBXSignal Failed!") end
-    local Connection = Instance:Connect(Callback)
-    table.insert(Connections, Connection)
-    
-    if Name then
-        if IConnections[Name] then 
-            IConnections[Name]:Disonnect()
-        end
-
-        IConnections[Name] = Connection
-    end
-  
-    return Connection
-end
   
 Tools.Rejoin = function()
     local Success, ErrorMessage = pcall(function()
@@ -74,6 +57,34 @@ Tools.FireSafeRemote = function(Instance)
 
     return Instance:FireServer()
 end
+
+Tools.Tween = function( Duration, Start, Goal)
+    local StartTime = tick()
+    while tick() - StartTime < Duration do
+        local Time = (tick() - StartTime) / Duration
+        Start = Start:lerp(Goal, Time)
+
+        task.wait()
+		end
+end
+
+Tools.Connect = function( Instance, Callback, Name )
+    if not Instance or not Callback then return warn("RBXSignal Failed!") end
+    local Connection = Instance:Connect(Callback)
+    table.insert(Connections, Connection)
+    
+    if Name then
+        if IConnections[Name] then 
+            IConnections[Name]:Disonnect()
+        end
+
+        IConnections[Name] = Connection
+    end
+  
+    return Connection
+end
+
+Tools.
 
 -- // User Interface Start
 
@@ -162,17 +173,7 @@ end
                     if IConnections.NextBuxTracker then IConnections.NextBuxTracker:Disconnect() end
                     return
                 end
-                if Players.LocalPlayer.stats.nextbux.Value < OldNValue + 80 then return end
-            
-                OldNValue = Players.LocalPlayer.stats.nextbux.Value
-            
-                task.wait(.2)
-            
-                Fluent:Notify({
-                    Title = "NextBux Tracker!",
-                    Content = string.format("%s", Tools.FormatNumber(Players.LocalPlayer.stats.nextbux.Value)),
-                    Duration = 2
-                })
+                
             
                 
             end, "NextBuxTracker")
@@ -180,28 +181,6 @@ end
     end)
   
     local PunchTracker = Tabs.Settings:AddToggle("PunchTracker", { Title = "Punch Tracker", Default = false })
-    PunchTracker:OnChanged(function()
-        if Options.PunchTracker.Value then
-            Tools.Connect(Players.LocalPlayer.stats.punches:GetPropertyChangedSignal('Value'), function()
-                if not Options.PunchTracker.Value then
-                    if IConnections.PunchTracker then IConnections.PunchTracker:Disconnect() end
-                    return
-                end
-                if Players.LocalPlayer.stats.punches.Value < OldPValue + 80 then return end
-                
-                OldPValue = Players.LocalPlayer.stats.punches.Value
-                
-                task.wait(.2)
-               
-                Fluent:Notify({
-                    Title = "Punch Tracker!",
-                    Content = string.format("%s", Tools.FormatNumber(Players.LocalPlayer.stats.punches.Value)),
-                    Duration = 2
-                })
-            
-            end, "PunchTracker")
-        end
-    end)
 end
 
 Window:SelectTab(1)
@@ -211,3 +190,38 @@ Fluent:Notify({
     Content = string.format("Successfully loaded %s!", Settings.Title),
     Duration = 5
 })
+
+local OldNValue = Players.LocalPlayer.stats.nextbux.Value
+local OldPValue = Players.LocalPlayer.stats.punches.Value
+Tools.Connect(RunService.Heartbeat, function()
+    if Options.NextBuxTracker.Value then
+        if Players.LocalPlayer.stats.nextbux.Value > OldNValue + 80 then
+            OldNValue = Players.LocalPlayer.stats.nextbux.Value
+        
+            task.wait(.2)
+        
+            Fluent:Notify({
+                Title = "NextBux Tracker:",
+                Content = string.format("%s", Tools.FormatNumber(Players.LocalPlayer.stats.nextbux.Value)),
+                Duration = 2
+            })
+        end
+    end
+    
+    if Options.PunchTracker.Value then
+        if Players.LocalPlayer.stats.punches.Value > OldPValue + 80 then
+            OldPValue = Players.LocalPlayer.stats.punches.Value
+            
+            task.wait(.2)
+           
+            Fluent:Notify({
+                Title = "Punch Tracker:",
+                Content = string.format("%s", Tools.FormatNumber(Players.LocalPlayer.stats.punches.Value)),
+                Duration = 2
+            })
+        end
+    end
+    if Options.Punch.Value then
+        Tools.FireSafeRemote(ReplicatedStorage.events.player["local"].punch)
+    end
+end)
