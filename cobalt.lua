@@ -160,7 +160,7 @@ end
             Tools.Connect(Players.LocalPlayer.stats.nextbux:GetPropertyChangedSignal('Value'), function()
                 if Players.LocalPlayer.stats.nextbux.Value < OldNValue + 80 then return end
             
-                OldPValue = Players.LocalPlayer.stats.nextbux.Value
+                OldNValue = Players.LocalPlayer.stats.nextbux.Value
             
                 task.wait(.2)
             
