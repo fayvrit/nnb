@@ -27,7 +27,7 @@ Tools.Connect = function( Instance, Callback, Name )
     
     if Name then
         if IConnections[Name] then 
-            IConnections:Disonnect()
+            IConnections[Name]:Disonnect()
         end
 
         IConnections[Name] = Connection
