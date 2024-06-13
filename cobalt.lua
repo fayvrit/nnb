@@ -7,8 +7,8 @@ local Settings = {
 }
 
 local Fluent = loadstring(game:HttpGet(Settings.Repo .. "/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+--local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+--local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -153,7 +153,7 @@ end
   
 end]]
 
-SaveManager:SetLibrary(Fluent)
+--[[SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 
 SaveManager:IgnoreThemeSettings()
@@ -164,7 +164,7 @@ InterfaceManager:SetFolder("FluentScriptHub")
 SaveManager:SetFolder("FluentScriptHub/specific-game")
 
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
-SaveManager:BuildConfigSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)]]
   
 Window:SelectTab(1)
 
