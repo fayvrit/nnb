@@ -56,7 +56,7 @@ end
 
 local Window = Fluent:CreateWindow({
     Title = Settings.Title,
-    SubTitle = "ritownsya",
+    SubTitle = Settings.SubTitle,
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = false,
