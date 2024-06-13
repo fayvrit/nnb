@@ -14,7 +14,6 @@ local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local StartTick = Tick() 
 local Tools = {}
 
 Tools.Rejoin = function()
@@ -279,6 +278,6 @@ Fluent:Notify({
     Duration = 5
 })
 
---SaveManager:LoadAutoloadConfig()
+SaveManager:LoadAutoloadConfig()
 
 -- // User Interface End
