@@ -139,7 +139,7 @@ local Options = Fluent.Options
     })
 end
 
---[[ Auto Tabs ]] do
+--[[ Auto Tabs  do
     local Punch = Tabs.Auto:AddToggle("Punch", { Title = "Punch", Default = false })
     Punch:OnChanged(function()
         if Options.Punch.Value then
@@ -151,7 +151,7 @@ end
         end
     end)
   
-end
+end]]
 
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
