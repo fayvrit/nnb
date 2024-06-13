@@ -13,6 +13,7 @@ local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local OldNValue = Players.LocalPlayer.stats.nextbux.Value
 local OldPValue = Players.LocalPlayer.stats.punches.Value
 local Connections = {}
 local IConnections = {}
@@ -140,12 +141,12 @@ end
 --[[ Auto Tabs ]]  do
     local Punch = Tabs.Auto:AddToggle("Punch", { Title = "Punch", Default = false })
     Punch:OnChanged(function()
-        if not Options.Punch.Value and IConnections.Punch then
-            IConnections.Punch:Disconnect()
-        else
+        if Options.Punch.Value then
             Tools.Connect(RunService.Heartbeat, function()
                 Tools.FireSafeRemote(ReplicatedStorage.events.player["local"].punch)
             end, "Punch")
+        else
+            if IConnections.Punch then IConnections.Punch:Disconnect() end
         end
     end)
 end
@@ -153,9 +154,7 @@ end
 --[[ Settings Tabs ]] do
     local NextBuxTracker = Tabs.Settings:AddToggle("NextBuxTracker", { Title = "NextBux Tracker", Default = false })
     NextBuxTracker:OnChanged(function()
-        if not Options.NextBuxTracker.Value and IConnections.NextBuxTracker then
-            IConnections.NextBuxTracker:Disconnect()
-        else
+        if Options.NextBuxTracker.Value then
             Tools.Connect(Players.LocalPlayer.stats.nextbux:GetPropertyChangedSignal('Value'), function()
                 if Players.LocalPlayer.stats.nextbux.Value < OldNValue + 80 then return end
                 OldPValue = Players.LocalPlayer.stats.nextbux.Value
@@ -166,14 +165,14 @@ end
                     Duration = 2
                 })
             end, "NextBuxTracker")
+        else
+            if IConnections.NextBuxTracker then IConnections.NextBuxTracker:Disconnect() end
         end
     end)
   
     local PunchTracker = Tabs.Settings:AddToggle("PunchTracker", { Title = "Punch Tracker", Default = false })
     PunchTracker:OnChanged(function()
-        if not Options.PunchTracker.Value and IConnections.PunchTracker then
-            IConnections.PunchTracker:Disconnect()
-        else
+        if Options.PunchTracker.Value then
             Tools.Connect(Players.LocalPlayer.stats.punches:GetPropertyChangedSignal('Value'), function()
                 if Players.LocalPlayer.stats.punches.Value < OldPValue + 80 then return end
                 OldPValue = Players.LocalPlayer.stats.punches.Value
@@ -184,6 +183,8 @@ end
                     Duration = 2
                 })
             end, "PunchTracker")
+        else
+            if IConnections.PunchTracker then IConnections.PunchTracker:Disconnect() end
         end
     end)
 end
