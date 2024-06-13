@@ -1,13 +1,61 @@
-local StartTick = tick() 
+-- rit owns ya
 
 local Settings = {
   Repo = "https://github.com/dawid-scripts/Fluent"
-  Title
+  Title = "Cobalt"
+  SubTitle = "0.0.1"
 }
 
 local Fluent = loadstring(game:HttpGet(Settings.Repo .. "/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet(Settings.Repo .. "/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet(Settings.Repo .. "/master/Addons/InterfaceManager.lua"))()
+
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local StartTick = tick() 
+local Tools = {}
+
+Tools.Rejoin = function()
+    local Success, ErrorMessage = pcall(function()
+        TeleportService:Teleport(game.PlaceId, Players.LocalPlayer)
+    end)
+  
+    if ErrorMessage and not Success then
+        Fluent:Notify({
+            Title = "Failed!",
+            Content = "Rejoin attempt failed!",
+            Duration = 2
+        })
+    end
+end
+
+Tools.TeleportTo = function(CFrame)
+    if not Players.LocalPlayer or not Players.LocalPlayer.Character then
+        return Fluent:Notify({
+            Title = "Instance not found!",
+            Content = "Player Instance is nil!",
+            Duration = 2
+        })
+    end
+
+    Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame)
+end
+
+Tools.GetSafeValue = function(Instance)
+    if not Instance then warn("Safe Value Not Found!") return end
+
+    return Instance.Value
+end
+
+Tools.FireSafeRemote = function(Instance)
+    if not Instance then warn("Safe Remote Not Found!") return end
+
+    return Instance:FireServer()
+end
+
+-- // User Interface Start
 
 local Window = Fluent:CreateWindow({
     Title = Settings.Title,
@@ -16,59 +64,56 @@ local Window = Fluent:CreateWindow({
     Size = UDim2.fromOffset(580, 460),
     Acrylic = false,
     Theme = "Dark",
-    MinimizeKey = Enum.KeyCode.RightShift -- Used when theres no MinimizeKeybind
+    MinimizeKey = Enum.KeyCode.RightShift
 })
-
--- Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 
 local Tabs = {
     Self = Window:AddTab({ Title = "Self", Icon = "" }),
     Game = Window:AddTab({ Title = "Game", Icon = "" })
     Shop = Window:AddTab({ Title = "Shop", Icon = "" })
+    Teleport = Window:AddTab({ Title = "Teleport", Icon = "" })
+    Auto = Window:AddTab({ Title = "Auto", Icon = "" })
 }
 
 local Options = Fluent.Options
 
 do
-      
-    Fluent:Notify({
-        Title = "Loaded!",
-        Content = string.format("Loaded in %ss", Tick() - StartTick),
-        Duration = 5 -- Set to nil to make the notification not disappear
-    })
-  
-    Tabs.Main:AddParagraph({
-        Title = "Paragraph",
-        Content = "This is a paragraph.\nSecond line!"
+    Tabs.Self:AddParagraph({
+        Title = "Self Info",
+        Content = string.format("Name: %s\nDisplay Name: %s\nID: %s\nAccount Age: %s", Players.LocalPlayer.Name, Players.LocalPlayer.DisplayName, Players.LocalPlayer.UserId, Players.LocalPlayer.AccountAge)
     })
 
-
-    Tabs.Main:AddButton({
-        Title = "Button",
-        Description = "Very important button",
+    Tabs.Self:AddButton({
+        Title = "Reset",
+        Description = "Reset your character",
         Callback = function()
             Window:Dialog({
-                Title = "Title",
-                Content = "This is a dialog",
+                Title = string.format("%s's Dialog", Settings.Title),
+                Content = "Would you like to \"Reset your character?\"",
                 Buttons = {
-                    {
-                        Title = "Confirm",
-                        Callback = function()
-                            print("Confirmed the dialog.")
-                        end
-                    },
-                    {
-                        Title = "Cancel",
-                        Callback = function()
-                            print("Cancelled the dialog.")
-                        end
-                    }
+                    { Title = "Confirm", Callback = function()
+                        Tools.FireSafeRemote(ReplicatedStorage.events.player.char.respawnchar)
+                    end },
+                    { Title = "Cancel" }
                 }
             })
         end
     })
-
-
+  
+    Tabs.Self:AddButton({
+        Title = "Rejoin",
+        Description = "Rejoins the server",
+        Callback = function()
+            Window:Dialog({
+                Title = string.format("%s's Dialog", Settings.Title),
+                Content = "Would you like to \"Rejoin the server?\"",
+                Buttons = {
+                    { Title = "Confirm", Callback = Tools.Rejoin },
+                    { Title = "Cancel" }
+                }
+            })
+        end
+    })
 
     local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
 
@@ -77,8 +122,6 @@ do
     end)
 
     Options.MyToggle:SetValue(false)
-
-
     
     local Slider = Tabs.Main:AddSlider("Slider", {
         Title = "Slider",
@@ -98,8 +141,6 @@ do
 
     Slider:SetValue(3)
 
-
-
     local Dropdown = Tabs.Main:AddDropdown("Dropdown", {
         Title = "Dropdown",
         Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
@@ -113,8 +154,6 @@ do
         print("Dropdown changed:", Value)
     end)
 
-
-    
     local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
         Title = "Dropdown",
         Description = "You can select multiple values.",
@@ -150,8 +189,6 @@ do
     
     Colorpicker:SetValueRGB(Color3.fromRGB(0, 255, 140))
 
-
-
     local TColorpicker = Tabs.Main:AddColorpicker("TransparencyColorpicker", {
         Title = "Colorpicker",
         Description = "but you can change the transparency.",
@@ -166,26 +203,20 @@ do
         )
     end)
 
-
-
     local Keybind = Tabs.Main:AddKeybind("Keybind", {
         Title = "KeyBind",
-        Mode = "Toggle", -- Always, Toggle, Hold
-        Default = "LeftControl", -- String as the name of the keybind (MB1, MB2 for mouse buttons)
+        Mode = "Toggle",
+        Default = "LeftControl",
 
-        -- Occurs when the keybind is clicked, Value is `true`/`false`
         Callback = function(Value)
             print("Keybind clicked!", Value)
         end,
-
-        -- Occurs when the keybind itself is changed, `New` is a KeyCode Enum OR a UserInputType Enum
+      
         ChangedCallback = function(New)
             print("Keybind changed!", New)
         end
     })
 
-    -- OnClick is only fired when you press the keybind and the mode is Toggle
-    -- Otherwise, you will have to use Keybind:GetState()
     Keybind:OnClick(function()
         print("Keybind clicked:", Keybind:GetState())
     end)
@@ -227,40 +258,27 @@ do
     end)
 end
 
-
--- Addons:
--- SaveManager (Allows you to have a configuration system)
--- InterfaceManager (Allows you to have a interface managment system)
-
--- Hand the library over to our managers
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 
--- Ignore keys that are used by ThemeManager.
--- (we dont want configs to save themes, do we?)
 SaveManager:IgnoreThemeSettings()
 
--- You can add indexes of elements the save manager should ignore
 SaveManager:SetIgnoreIndexes({})
 
--- use case for doing it this way:
--- a script hub could have themes in a global folder
--- and game configs in a separate folder per game
-InterfaceManager:SetFolder("FluentScriptHub")
-SaveManager:SetFolder("FluentScriptHub/specific-game")
+InterfaceManager:SetFolder(Settings.Title)
+SaveManager:SetFolder(string.format("%s/NNB", Settings.Title))
 
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
 
-
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title = "Fluent",
-    Content = "The script has been loaded.",
-    Duration = 8
+    Title = "Loaded!",
+    Content = string.format("Loaded in %ss", Tick() - StartTick),
+    Duration = 5
 })
 
--- You can use the SaveManager:LoadAutoloadConfig() to load a config
--- which has been marked to be one that auto loads!
 SaveManager:LoadAutoloadConfig()
+
+-- // User Interface End
