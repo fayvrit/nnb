@@ -141,12 +141,13 @@ end
 --[[ Auto Tabs ]]  do
     local Punch = Tabs.Auto:AddToggle("Punch", { Title = "Punch", Default = false })
     Punch:OnChanged(function()
-        if not Options.Punch.Value then
-            if IConnections.Punch then IConnections.Punch:Disconnect() end
-        end
         if Options.Punch.Value then
             Tools.Connect(RunService.Heartbeat, function()
                 Tools.FireSafeRemote(ReplicatedStorage.events.player["local"].punch)
+            
+                if not Options.Punch.Value then
+                    if IConnections.Punch then IConnections.Punch:Disconnect() end
+                end
             end, "Punch")
         end
     end)
@@ -155,40 +156,46 @@ end
 --[[ Settings Tabs ]] do
     local NextBuxTracker = Tabs.Settings:AddToggle("NextBuxTracker", { Title = "NextBux Tracker", Default = false })
     NextBuxTracker:OnChanged(function()
-      if not Options.NextBuxTracker.Value then
-          if IConnections.NextBuxTracker then IConnections.NextBuxTracker:Disconnect() end
-      end
-      
       if Options.NextBuxTracker.Value then
             Tools.Connect(Players.LocalPlayer.stats.nextbux:GetPropertyChangedSignal('Value'), function()
                 if Players.LocalPlayer.stats.nextbux.Value < OldNValue + 80 then return end
+            
                 OldPValue = Players.LocalPlayer.stats.nextbux.Value
+            
                 task.wait(.2)
+            
                 Fluent:Notify({
                     Title = "NextBux Tracker!",
                     Content = string.format("%s", Tools.FormatNumber(Players.LocalPlayer.stats.nextbux.Value)),
                     Duration = 2
                 })
+            
+                if not Options.NextBuxTracker.Value then
+                    if IConnections.NextBuxTracker then IConnections.NextBuxTracker:Disconnect() end
+                end
             end, "NextBuxTracker")
         end
     end)
   
     local PunchTracker = Tabs.Settings:AddToggle("PunchTracker", { Title = "Punch Tracker", Default = false })
     PunchTracker:OnChanged(function()
-        if not Options.PunchTracker.Value then
-            if IConnections.PunchTracker then IConnections.PunchTracker:Disconnect() end
-        end
-      
         if Options.PunchTracker.Value then
             Tools.Connect(Players.LocalPlayer.stats.punches:GetPropertyChangedSignal('Value'), function()
                 if Players.LocalPlayer.stats.punches.Value < OldPValue + 80 then return end
+                
                 OldPValue = Players.LocalPlayer.stats.punches.Value
+                
                 task.wait(.2)
+               
                 Fluent:Notify({
                     Title = "Punch Tracker!",
                     Content = string.format("%s", Tools.FormatNumber(Players.LocalPlayer.stats.punches.Value)),
                     Duration = 2
                 })
+
+                if not Options.PunchTracker.Value then
+                    if IConnections.PunchTracker then IConnections.PunchTracker:Disconnect() end
+                end
             end, "PunchTracker")
         end
     end)
