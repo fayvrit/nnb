@@ -73,6 +73,7 @@ local Tabs = {
     Shop = Window:AddTab({ Title = "Shop", Icon = "" })
     Teleport = Window:AddTab({ Title = "Teleport", Icon = "" })
     Auto = Window:AddTab({ Title = "Auto", Icon = "" })
+    Settings = Window:AddTab({ Title = "Settings", Icon = "" })
 }
 
 local Options = Fluent.Options
@@ -123,7 +124,7 @@ do
 
     Options.MyToggle:SetValue(false)
     
-    local Slider = Tabs.Main:AddSlider("Slider", {
+    local Slider = Tabs.Self:AddSlider("Slider", {
         Title = "Slider",
         Description = "This is a slider",
         Default = 2,
