@@ -1,6 +1,5 @@
 -- rit owns ya
 
-
 local Settings = {
   Repo = "https://github.com/dawid-scripts/Fluent",
   Title = "Cobalt",
@@ -10,7 +9,7 @@ local Settings = {
 local Fluent = loadstring(game:HttpGet(Settings.Repo .. "/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet(Settings.Repo .. "/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet(Settings.Repo .. "/master/Addons/InterfaceManager.lua"))()
-print(Fluent)
+
 local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -142,7 +141,7 @@ do
 
     Slider:SetValue(3)
 
-    local Dropdown = Tabs.Main:AddDropdown("Dropdown", {
+    local Dropdown = Tabs.Self:AddDropdown("Dropdown", {
         Title = "Dropdown",
         Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
         Multi = false,
@@ -155,7 +154,7 @@ do
         print("Dropdown changed:", Value)
     end)
 
-    local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
+    local MultiDropdown = Tabs.Self:AddDropdown("MultiDropdown", {
         Title = "Dropdown",
         Description = "You can select multiple values.",
         Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
@@ -179,7 +178,7 @@ do
 
 
 
-    local Colorpicker = Tabs.Main:AddColorpicker("Colorpicker", {
+    local Colorpicker = Tabs.Self:AddColorpicker("Colorpicker", {
         Title = "Colorpicker",
         Default = Color3.fromRGB(96, 205, 255)
     })
@@ -190,7 +189,7 @@ do
     
     Colorpicker:SetValueRGB(Color3.fromRGB(0, 255, 140))
 
-    local TColorpicker = Tabs.Main:AddColorpicker("TransparencyColorpicker", {
+    local TColorpicker = Tabs.Self:AddColorpicker("TransparencyColorpicker", {
         Title = "Colorpicker",
         Description = "but you can change the transparency.",
         Transparency = 0,
@@ -204,7 +203,7 @@ do
         )
     end)
 
-    local Keybind = Tabs.Main:AddKeybind("Keybind", {
+    local Keybind = Tabs.Self:AddKeybind("Keybind", {
         Title = "KeyBind",
         Mode = "Toggle",
         Default = "LeftControl",
@@ -243,7 +242,7 @@ do
     Keybind:SetValue("MB2", "Toggle") -- Sets keybind to MB2, mode to Hold
 
 
-    local Input = Tabs.Main:AddInput("Input", {
+    local Input = Tabs.Self:AddInput("Input", {
         Title = "Input",
         Default = "Default",
         Placeholder = "Placeholder",
