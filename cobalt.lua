@@ -14,8 +14,8 @@ local Players = game:GetService("Players")
 local TeleportService = game:GetService("TeleportService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local StartTick = tick() 
---[[local Tools = {}
+local StartTick = Tick() 
+local Tools = {}
 
 Tools.Rejoin = function()
     local Success, ErrorMessage = pcall(function()
@@ -53,11 +53,11 @@ Tools.FireSafeRemote = function(Instance)
     if not Instance then warn("Safe Remote Not Found!") return end
 
     return Instance:FireServer()
-end]]
+end
 
 -- // User Interface Start
 
---[[local Window = Fluent:CreateWindow({
+local Window = Fluent:CreateWindow({
     Title = Settings.Title,
     SubTitle = "ritownsya",
     TabWidth = 160,
@@ -75,9 +75,9 @@ local Tabs = {
     Auto = Window:AddTab({ Title = "Auto", Icon = "" })
 }
 
-local Options = Fluent.Options]]
+local Options = Fluent.Options
 
---[[do
+do
     Tabs.Self:AddParagraph({
         Title = "Self Info",
         Content = string.format("Name: %s\nDisplay Name: %s\nID: %s\nAccount Age: %s", Players.LocalPlayer.Name, Players.LocalPlayer.DisplayName, Players.LocalPlayer.UserId, Players.LocalPlayer.AccountAge)
@@ -256,9 +256,9 @@ local Options = Fluent.Options]]
     Input:OnChanged(function()
         print("Input updated:", Input.Value)
     end)
-end]]
+end
 
---[[SaveManager:SetLibrary(Fluent)
+SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 
 SaveManager:IgnoreThemeSettings()
@@ -271,14 +271,13 @@ SaveManager:SetFolder(string.format("%s/NNB", Settings.Title))
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
 
-Window:SelectTab(1)]]
+Window:SelectTab(1)
 
-print(Tick - StartTick)
---[[Fluent:Notify({
+Fluent:Notify({
     Title = "Loaded!",
-    Content = string.format("Loaded in %ss", Tick() - StartTick),
+    Content = string.format("Successfully loaded %s!", Settings.Title),
     Duration = 5
-})]]
+})
 
 --SaveManager:LoadAutoloadConfig()
 
