@@ -151,34 +151,10 @@ end
 
 --[[ Auto Tabs ]]  do
     local Punch = Tabs.Auto:AddToggle("Punch", { Title = "Punch", Default = false })
-    Punch:OnChanged(function()
-        if Options.Punch.Value then
-            Tools.Connect(RunService.Heartbeat, function()
-                if not Options.Punch.Value then
-                    if IConnections.Punch then IConnections.Punch:Disconnect() end
-                    return
-                end
-                Tools.FireSafeRemote(ReplicatedStorage.events.player["local"].punch)
-            end, "Punch")
-        end
-    end)
 end
 
 --[[ Settings Tabs ]] do
     local NextBuxTracker = Tabs.Settings:AddToggle("NextBuxTracker", { Title = "NextBux Tracker", Default = false })
-    NextBuxTracker:OnChanged(function()
-      if Options.NextBuxTracker.Value then
-            Tools.Connect(Players.LocalPlayer.stats.nextbux:GetPropertyChangedSignal('Value'), function()
-                if not Options.NextBuxTracker.Value then
-                    if IConnections.NextBuxTracker then IConnections.NextBuxTracker:Disconnect() end
-                    return
-                end
-                
-            
-                
-            end, "NextBuxTracker")
-        end
-    end)
   
     local PunchTracker = Tabs.Settings:AddToggle("PunchTracker", { Title = "Punch Tracker", Default = false })
 end
